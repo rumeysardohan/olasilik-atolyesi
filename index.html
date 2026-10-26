@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="tr" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6. Sınıf Olasılık Atölyesi & Deney Masası</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..800;1,9..40,400..800&family=Fraunces:ital,opsz,wght@0,9..144,700..900;1,9..144,700..900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  
+  <style>
+    :root {
+      --ink: #183348;
+      --teal: #087f78;
+      --teal-dark: #055954;
+      --coral: #ef7457;
+      --coral-light: #ffded2;
+      --cream: #fff9ec;
+      --paper: #fffefb;
+      --gold: #f59e0b;
+      --mint: #e8f7ef;
+      --mint-border: #a4d5c6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      color: var(--ink);
+      background-color: var(--cream);
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: "Fraunces", serif;
+    }
+
+    .app-shell {
+      width: 100%;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 8% 10%, #ffe2ab 0, transparent 28%),
+        radial-gradient(circle at 92% 20%, #c8efdf 0, transparent 32%),
+        radial-gradient(circle at 50% 85%, #fde8d7 0, transparent 35%);
+    }
+
+    .paper {
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      box-shadow: 5px 5px 0px var(--ink);
+      border-radius: 1.25rem;
+    }
+
+    .mode-card {
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+    }
+
+    .mode-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 8px 8px 0px var(--ink);
+    }
+
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid var(--coral);
+      outline-offset: 3px;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+      border: 2px solid var(--ink);
+      box-shadow: 3px 3px 0px var(--ink);
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--teal-dark);
+      transform: translateY(-2px);
+      box-shadow: 5px 5px 0px var(--ink);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      box-shadow: 3px 3px 0px var(--ink);
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #f3f4f6;
+      transform: translateY(-2px);
+      box-shadow: 5px 5px 0px var(--ink);
+    }
+
+    .btn-amber {
+      background: #fdf0d5;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      box-shadow: 3px 3px 0px var(--ink);
+      transition: all 0.15s ease;
+    }
+
+    .btn-amber:hover:not(:disabled) {
+      background: #fce4b3;
+      transform: translateY(-2px);
+      box-shadow: 5px 5px 0px var(--ink);
+    }
+
+    .chip {
+      background: var(--mint);
+      border: 1px solid var(--mint-border);
+    }
+
+    .result-token {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.3rem;
+      height: 2.3rem;
+      padding: 0 0.4rem;
+      border-radius: 0.65rem;
+      font-weight: 800;
+      background: #d8f4e7;
+      color: #095b51;
+      border: 1.5px solid var(--ink);
+      box-shadow: 1.5px 1.5px 0px var(--ink);
+      font-size: 0.9rem;
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .result-token.no {
+      background: var(--coral-light);
+      color: #953d27;
+    }
+
+    .dice-spin {
+      animation: roll3d 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .coin-flip {
+      animation: coinFlip 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .appear {
+      animation: appear 0.35s ease-out both;
+    }
+
+    @keyframes roll3d {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.25) translateY(-8px); }
+      100% { transform: rotate(360deg) scale(1) translateY(0); }
+    }
+
+    @keyframes coinFlip {
+      0% { transform: rotateY(0deg) scale(1); }
+      50% { transform: rotateY(720deg) scale(1.3) translateY(-12px); }
+      100% { transform: rotateY(1440deg) scale(1) translateY(0); }
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .progress-bar-fill {
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: #a4d5c6; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #087f78; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="w-full text-[#183348]">
+  <div class="app-shell w-full px-3 py-4 md:px-8 md:py-7 flex flex-col justify-between">
+    <div class="mx-auto w-full max-w-6xl">
+      
+      <!-- HEADER DASHBOARD -->
+      <header class="mb-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="inline-block rounded-full bg-[#ffdfad] border border-[#183348] px-3.5 py-1 font-bold text-xs tracking-wider text-[#183348] uppercase shadow-[2px_2px_0px_#183348]">
+                MATEMATİK ATÖLYESİ • 6. SINIF
+              </span>
+              <button id="sound-toggle" type="button" title="Sesi Aç/Kapat" class="text-xl p-1 hover:scale-110 transition-transform cursor-pointer">
+                🔊
+              </button>
+            </div>
+            <h1 class="mt-2 text-2xl md:text-4xl font-extrabold text-[#183348] leading-tight">
+              Olasılık Atölyesi & Deney Masası
+            </h1>
+            <p class="mt-1 text-xs md:text-sm font-medium text-[#31566a]">
+              Gözlem yap, deney verilerini topla, deneysel olasılığı ve **Büyük Sayılar Yasasını** keşfet!
+            </p>
+          </div>
+
+          <!-- SCORE & ROUND COUNTER -->
+          <div class="paper flex items-center gap-4 px-5 py-3 self-stretch sm:self-auto justify-around">
+            <div class="text-center sm:text-left">
+              <span class="block text-[10px] font-bold uppercase tracking-wider text-[#31566a]">TOPLAM PUAN</span>
+              <strong id="score-value" class="text-2xl md:text-3xl font-extrabold text-[#087f78]">0</strong>
+            </div>
+            <div class="h-8 w-[2px] bg-[#183348]/20"></div>
+            <div class="text-center sm:text-left">
+              <span class="block text-[10px] font-bold uppercase tracking-wider text-[#31566a]">TOPLAM DENEY</span>
+              <strong id="total-experiments-count" class="text-2xl md:text-3xl font-extrabold text-[#183348]">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="mt-5 flex flex-wrap gap-2 border-b-2 border-[#183348]/20 pb-3">
+          <button id="tab-desk" type="button" class="btn-primary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2">
+            🎲 Deney Masası & Sıklık Tablosu
+          </button>
+          <button id="tab-questions" type="button" class="btn-secondary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2">
+            🎯 Olasılık Avcısı (Veriye Dayalı Sorular)
+          </button>
+          <button id="tab-scenarios" type="button" class="btn-secondary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2">
+            ☂️ Günlük Yaşam Tahminleri
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        
+        <!-- ==================== TAB 1: DENEY MASASI (EXPERIMENT DESK) ==================== -->
+        <section id="sec-desk" class="appear space-y-6">
+          
+          <!-- MODE SELECTOR FOR EXPERIMENT DESK -->
+          <div class="flex flex-wrap items-center justify-between gap-3 bg-amber-50/80 p-3 rounded-2xl border-2 border-[#183348]">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-xs md:text-sm text-[#183348]">Deney Tipi Seçin:</span>
+              <button id="desk-mode-dice" type="button" class="btn-primary text-xs px-3 py-1.5 rounded-lg font-bold">
+                🎲 Sayı Küpü (Zar)
+              </button>
+              <button id="desk-mode-coin" type="button" class="btn-secondary text-xs px-3 py-1.5 rounded-lg font-bold">
+                🪙 Yazı - Tura
+              </button>
+            </div>
+
+            <button id="reset-desk-btn" type="button" class="btn-secondary text-xs px-3 py-1.5 rounded-lg font-bold text-rose-700 hover:bg-rose-50">
+              🔄 Verileri Sıfırla
+            </button>
+          </div>
+
+          <div class="grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+            
+            <!-- LEFT PANEL: CONTROLS & VISUALIZER -->
+            <div class="paper p-5 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-2">
+                  <span class="chip rounded-full px-3 py-1 text-xs font-extrabold text-[#095b51]">
+                    1. DENEY ALANI & SIMÜLASYON
+                  </span>
+                  <span id="desk-status-badge" class="text-xs font-bold bg-teal-100 text-[#087f78] px-2.5 py-1 rounded-lg border border-[#183348]">
+                    Sayı Küpü Deneyi
+                  </span>
+                </div>
+
+                <h2 id="desk-title" class="mt-3 text-xl md:text-2xl font-bold text-[#183348]">
+                  Zar Atarak Gözlem Verisi Toplama
+                </h2>
+                <p class="mt-1 text-xs md:text-sm text-[#31566a] leading-relaxed">
+                  İstediğin sayıda atış yap, çıkan yüzleri sıklık tablosunda ve grafiklerde gözlemle.
+                </p>
+
+                <!-- INTERACTIVE CONTROLS -->
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <button id="roll-1-btn" type="button" class="btn-primary flex-1 min-w-[90px] py-2.5 rounded-xl text-xs md:text-sm font-bold">
+                    1 Kez At
+                  </button>
+                  <button id="roll-5-btn" type="button" class="btn-primary flex-1 min-w-[90px] py-2.5 rounded-xl text-xs md:text-sm font-bold">
+                    5 Kez At
+                  </button>
+                  <button id="roll-10-btn" type="button" class="btn-primary flex-1 min-w-[90px] py-2.5 rounded-xl text-xs md:text-sm font-bold">
+                    10 Kez At
+                  </button>
+                  <button id="roll-100-btn" type="button" class="btn-amber min-w-[130px] py-2.5 rounded-xl text-xs md:text-sm font-bold" title="Büyük Sayılar Yasasını Görmek İçin 100 Deneme Ekleyin">
+                    ⚡ 100x Hızlı Sim
+                  </button>
+                </div>
+
+                <!-- DYNAMIC VISUAL DISPLAY -->
+                <div class="my-5 rounded-2xl bg-amber-50/70 p-4 border-2 border-[#183348] flex flex-col items-center justify-center min-h-[110px]">
+                  <div id="dice-visual-box" class="text-center">
+                    <div id="die-face" class="mx-auto grid h-20 w-20 place-items-center rounded-2xl border-4 border-[#183348] bg-[#ffdfad] text-5xl shadow-[4px_4px_0px_#183348] transition-transform">
+                      🎲
+                    </div>
+                  </div>
+
+                  <div id="coin-visual-box" class="hidden text-center">
+                    <div id="coin-face" class="mx-auto grid h-20 w-20 place-items-center rounded-full border-4 border-[#183348] bg-yellow-300 text-2xl font-extrabold text-[#183348] shadow-[4px_4px_0px_#183348]">
+                      YAZI
+                    </div>
+                  </div>
+                </div>
+
+                <!-- HISTORY LOG -->
+                <div>
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-xs md:text-sm font-bold text-[#183348]">Son Gözlem Sonuçları (Son 20)</h3>
+                    <span id="roll-counter-text" class="text-xs font-bold text-[#087f78]">Toplam Atış: 0</span>
+                  </div>
+                  <div id="desk-history" class="mt-2 flex min-h-[48px] flex-wrap gap-1.5 p-2 rounded-xl bg-white border-2 border-[#183348] shadow-inner">
+                    <span class="text-xs text-gray-400 font-medium my-auto mx-auto">Henüz gözlem yapılmadı. Yukarıdaki butonlardan atış yapın!</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- LAW OF LARGE NUMBERS HIGHLIGHT -->
+              <div class="mt-5 border-t-2 border-[#183348] pt-3">
+                <div class="bg-teal-50 p-3 rounded-xl border border-[#a4d5c6] text-xs leading-relaxed text-[#183348]">
+                  <strong>💡 Büyük Sayılar Yasası:</strong> Deney sayısı (atış sayısı) arttıkça, 
+                  <strong>Deneysel Olasılık</strong> (Göreli Sıklık) değeri <strong>Teorik Olasılık</strong> değerine yaklaşır.
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT PANEL: FREQUENCY & EXPERIMENTAL PROBABILITY TABLE -->
+            <div class="paper p-5 flex flex-col justify-between">
+              <div>
+                <span class="chip rounded-full px-3 py-1 text-xs font-extrabold text-[#095b51]">
+                  2. GÖZLEM VE SIKLIK TABLOSU
+                </span>
+
+                <h3 class="mt-3 text-lg font-bold text-[#183348]">
+                  Deneysel Olasılık (Göreli Sıklık) Verileri
+                </h3>
+
+                <!-- FREQUENCY TABLE -->
+                <div class="mt-3 overflow-x-auto">
+                  <table class="w-full text-left text-xs md:text-sm border-collapse bg-white rounded-xl overflow-hidden border-2 border-[#183348]">
+                    <thead>
+                      <tr class="bg-[#183348] text-white font-bold">
+                        <th class="p-2.5 border-b border-[#183348]">Sonuç</th>
+                        <th class="p-2.5 border-b border-[#183348]">Gelme Sıklığı</th>
+                        <th class="p-2.5 border-b border-[#183348]">Deneysel Olasılık</th>
+                        <th class="p-2.5 border-b border-[#183348]">Yüzde / Oran</th>
+                      </tr>
+                    </thead>
+                    <tbody id="desk-freq-tbody">
+                      <!-- Dynamic rows generated by JS -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- FREQUENCY DISTRIBUTION BARS -->
+                <div class="mt-5">
+                  <h4 class="text-xs font-bold text-[#183348] uppercase tracking-wider mb-2">Gözlem Dağılım Grafiği</h4>
+                  <div id="desk-bars-container" class="space-y-2">
+                    <!-- Dynamic progress bars -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- SHORTCUT BUTTON TO PRACTICE QUESTIONS -->
+              <div class="mt-5 border-t-2 border-[#183348] pt-3 text-center">
+                <button id="go-to-questions-btn" type="button" class="btn-primary w-full py-2.5 rounded-xl text-xs md:text-sm font-bold flex items-center justify-center gap-2">
+                  🎯 Bu Verilerle Soru Çözmeye Geç <span>→</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== TAB 2: VERİYE DAYALI SORULAR (DYNAMIC QUIZ) ==================== -->
+        <section id="sec-questions" class="appear hidden space-y-5">
+          <div class="paper p-5 md:p-7 bg-amber-50/50">
+            
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+              <div>
+                <span class="chip rounded-full px-3 py-1 text-xs font-extrabold text-[#095b51]">
+                  🎯 OLASILIK AVCISI • VERİYE DAYALI SORULAR
+                </span>
+                <h2 class="mt-2 text-xl md:text-2xl font-bold text-[#183348]">
+                  Mevcut Deney Verilerinizden Üretilen Sorular
+                </h2>
+              </div>
+              <button id="generate-new-q-btn" type="button" class="btn-primary text-xs md:text-sm px-4 py-2 rounded-xl font-bold">
+                🎲 Yeni Soru Üret
+              </button>
+            </div>
+
+            <p class="mt-2 text-xs md:text-sm text-[#31566a]">
+              Aşağıdaki sorular, **Deney Masasında** yaptığınız toplam <strong id="q-total-trials-count" class="text-[#087f78]">0</strong> atışın sıklık verileri kullanılarak anlık olarak oluşturulmuştur.
+            </p>
+
+            <!-- QUESTION CONTAINER -->
+            <div id="q-container" class="mt-5 paper p-5 md:p-6 bg-white border-2 border-[#183348]">
+              <div id="q-not-enough" class="text-center py-6">
+                <span class="text-4xl block mb-2">🎲</span>
+                <h3 class="text-lg font-bold text-[#183348]">Henüz yeterli deney verisi yok!</h3>
+                <p class="mt-1 text-xs md:text-sm text-[#31566a] max-w-md mx-auto">
+                  Soru üretebilmek için lütfen önce <strong>Deney Masasında</strong> en az <strong>5 kez</strong> zar atın veya madeni para çevirin.
+                </p>
+                <button id="q-back-to-desk-btn" type="button" class="btn-primary mt-4 px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm">
+                  Deney Masasına Git ve Atış Yap
+                </button>
+              </div>
+
+              <div id="q-active-box" class="hidden">
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-xs font-extrabold uppercase tracking-wider text-[#ef7457] bg-orange-100 px-2.5 py-1 rounded-lg border border-[#183348]">
+                    Deneysel Olasılık Sorusu
+                  </span>
+                  <span id="q-difficulty-tag" class="text-xs font-bold text-[#087f78]">
+                    Sadeleştirilmiş Kesir
+                  </span>
+                </div>
+
+                <h3 id="q-text" class="text-base md:text-lg font-bold text-[#183348] leading-snug">
+                  Soru metni yükleniyor...
+                </h3>
+
+                <!-- MULTIPLE CHOICE OPTIONS -->
+                <div id="q-options" class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <!-- Option buttons dynamically generated -->
+                </div>
+
+                <!-- FEEDBACK & RATIONALE -->
+                <div id="q-feedback" class="mt-4 hidden p-4 rounded-xl border-2 border-[#183348] text-xs md:text-sm font-medium"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== TAB 3: GÜNLÜK YAŞAM TAHMİNLERİ (ESTIMATION) ==================== -->
+        <section id="sec-scenarios" class="appear hidden space-y-6">
+          <div class="grid gap-6 lg:grid-cols-[1.2fr_.8fr]">
+            
+            <!-- LEFT COLUMN: SCENARIO & HISTORY -->
+            <div class="paper p-5 md:p-6 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="chip rounded-full px-3 py-1 text-xs font-extrabold text-[#095b51]">
+                    ☂️ GÜNLÜK YAŞAM & SPOR VERİLERİ
+                  </span>
+                  <span id="sc-badge" class="text-xs font-bold text-[#ef7457] bg-orange-100 px-2.5 py-1 rounded-lg border border-[#183348]">
+                    Senaryo #1
+                  </span>
+                </div>
+
+                <h2 id="sc-heading" class="mt-3 text-xl md:text-2xl font-bold text-[#183348]">
+                  Yağmur Yağma Olasılığı
+                </h2>
+                <p id="sc-subheading" class="mt-1 text-xs md:text-sm text-[#31566a] font-medium">
+                  Geçmiş günlerin hava durumunu incele ve yarın yağmur yağma olasılığını tahmin et!
+                </p>
+
+                <!-- SCENARIO ICON VISUALIZER -->
+                <div class="my-5 rounded-2xl bg-amber-50/80 p-5 border-2 border-[#183348] flex flex-col items-center justify-center min-h-[110px]">
+                  <div id="sc-icon" class="text-5xl animate-bounce">
+                    🌧️
+                  </div>
+                </div>
+
+                <!-- SCENARIO HISTORY -->
+                <div>
+                  <h3 class="text-xs md:text-sm font-bold text-[#183348] mb-2">Geçmiş Gözlem Verileri</h3>
+                  <div id="sc-history-tokens" class="flex min-h-[48px] flex-wrap gap-2 p-2 rounded-xl bg-white border-2 border-[#183348] shadow-inner">
+                    <!-- Tokens generated by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- STATS COMPARISON BOARD -->
+              <div class="mt-6 border-t-2 border-[#183348] pt-4">
+                <div class="grid grid-cols-2 gap-3 text-xs md:text-sm font-bold bg-[#f3faf6] p-3.5 rounded-xl border-2 border-[#a4d5c6]">
+                  <div>
+                    <span class="block text-[10px] uppercase font-extrabold text-[#31566a]">GÖZLENEN GERÇEKLEŞME</span>
+                    <span id="sc-observed-rate" class="text-base md:text-lg font-extrabold text-[#087f78]">—</span>
+                  </div>
+                  <div>
+                    <span class="block text-[10px] uppercase font-extrabold text-[#31566a]">MODEL/TEORİK BEKLENTİ</span>
+                    <span id="sc-theoretical-rate" class="text-base md:text-lg font-extrabold text-[#183348]">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: ESTIMATION FORM -->
+            <div class="space-y-5">
+              <div class="paper p-5 md:p-6">
+                <h3 class="text-lg md:text-xl font-bold text-[#183348]">Olasılığı Tahmin Et</h3>
+                <p class="mt-1 text-xs text-[#31566a] leading-relaxed">
+                  Gözlemlerine göre gerçekleşme olasılığını yaz.<br>
+                  <span class="text-teal-800 font-bold">Desteklenen biçimler: <strong>0,65</strong> veya <strong>%65</strong> veya <strong>13/20</strong></span>
+                </p>
+
+                <form id="sc-guess-form" class="mt-4">
+                  <label for="sc-guess-input" class="mb-1.5 block text-xs font-bold uppercase text-[#183348]">
+                    TAHMİNİNİZ:
+                  </label>
+                  <input id="sc-guess-input" type="text" inputmode="decimal" autocomplete="off" class="w-full rounded-xl border-2 border-[#183348] bg-white px-4 py-3 text-base md:text-lg font-bold text-[#183348] shadow-[3px_3px_0px_#183348] focus:bg-amber-50" placeholder="Örn: %65 veya 0,65 veya 13/20">
+
+                  <p id="sc-validation" role="alert" class="mt-2 min-h-[18px] text-xs font-extrabold text-[#ef7457]"></p>
+
+                  <button id="sc-submit-btn" type="submit" class="btn-primary mt-2 w-full rounded-xl py-3 font-bold text-sm md:text-base">
+                    Gözlemle ve Test Et
+                  </button>
+                </form>
+              </div>
+
+              <!-- FEEDBACK BOX -->
+              <div id="sc-feedback-box" class="paper hidden rounded-2xl bg-[#e8f7ef] p-4 border-2 border-[#183348]">
+                <h4 class="text-xs md:text-sm font-bold text-[#183348] flex items-center gap-1.5">
+                  <span>🎯</span> Gözlem Sonucu
+                </h4>
+                <p id="sc-feedback-text" class="mt-2 text-xs md:text-sm leading-relaxed text-[#183348]"></p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="mt-8 text-center border-t-2 border-[#183348]/10 pt-4">
+        <p class="text-xs md:text-sm font-bold text-[#31566a]">
+          🌱 "Deney sayısı arttıkça deneysel olasılık teorik olasılığa yaklaşır." — Olasılık Atölyesi
+        </p>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    const $ = id => document.getElementById(id);
+
+    // ================= UTILITIES & FRACTION MATH =================
+    function gcd(a, b) {
+      a = Math.abs(a); b = Math.abs(b);
+      while (b) { const t = b; b = a % b; a = t; }
+      return a;
+    }
+
+    function simplifyFraction(num, den) {
+      if (den === 0) return "0";
+      if (num === 0) return "0";
+      const common = gcd(num, den);
+      const n = num / common;
+      const d = den / common;
+      return d === 1 ? `${n}` : `${n}/${d}`;
+    }
+
+    function parseProbabilityInput(raw) {
+      let s = raw.trim().replace(/\s/g, "");
+      if (s.includes("/")) {
+        const parts = s.split("/");
+        if (parts.length === 2) {
+          const num = Number(parts[0].replace(",", "."));
+          const den = Number(parts[1].replace(",", "."));
+          if (!isNaN(num) && !isNaN(den) && den !== 0) {
+            const val = num / den;
+            return val >= 0 && val <= 1 ? val : null;
+          }
+        }
+      }
+      const isPercent = s.startsWith("%") || s.endsWith("%");
+      s = s.replace(/%/g, "");
+      if (!/^(?:\d+(?:[.,]\d+)?|[.,]\d+)$/.test(s)) return null;
+      const n = Number(s.replace(",", "."));
+      const value = isPercent || n > 1 ? n / 100 : n;
+      return Number.isFinite(value) && value >= 0 && value <= 1 ? value : null;
+    }
+
+    function rateText(n) {
+      return (n * 100).toLocaleString("tr-TR", { maximumFractionDigits: 1 }) + "%";
+    }
+
+    function randomUnit() {
+      if (globalThis.crypto?.getRandomValues) {
+        const buf = new Uint32Array(1);
+        crypto.getRandomValues(buf);
+        return buf[0] / 4294967296;
+      }
+      return Math.random();
+    }
+
+    // ================= SOUND SYNTHESIZER =================
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+
+      try {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+
+        if (type === 'roll') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(160, now);
+          osc.frequency.exponentialRampToValueAtTime(380, now + 0.12);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+          osc.start(now); osc.stop(now + 0.12);
+        } else if (type === 'score') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.08);
+          osc.frequency.setValueAtTime(783.99, now + 0.16);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+          osc.start(now); osc.stop(now + 0.3);
+        } else if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(300, now);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+          osc.start(now); osc.stop(now + 0.05);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.setValueAtTime(180, now + 0.1);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+          osc.start(now); osc.stop(now + 0.25);
+        }
+      } catch (e) {}
+    }
+
+    $("sound-toggle").addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      $("sound-toggle").textContent = soundEnabled ? "🔊" : "🔇";
+    });
+
+    // ================= STATE MANAGEMENT =================
+    let totalScore = 0;
+    let deskMode = "dice"; // "dice" or "coin"
+    let diceCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+    let coinCounts = { "YAZI": 0, "TURA": 0 };
+    let deskHistory = [];
+    let activeQuestion = null;
+
+    const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+
+    // Daily Scenarios State
+    const scenarios = [
+      { title: "Yağmur Yağma Olasılığı", icon: "🌧️", chance: 0.65, theoretical: "%65", sub: "Gelecek günlerde hava durumu verilerini gözlemleyin." },
+      { title: "Otobüsün Zamanında Gelmesi", icon: "🚌", chance: 0.40, theoretical: "%40", sub: "Durağa yanaşan 10 otobüsün rötar verisi." },
+      { title: "Kantinde Taze Meyve Suyu Olması", icon: "🧃", chance: 0.60, theoretical: "%60", sub: "Haftalık kantin stok takibi." }
+    ];
+    let scIndex = 0;
+    let scHistory = [true, false, true, true, false, true, true, false, true, true];
+
+    // ================= TAB NAVIGATION =================
+    function switchTab(tabId) {
+      playSound('click');
+      ["sec-desk", "sec-questions", "sec-scenarios"].forEach(id => {
+        $(id).classList.toggle("hidden", id !== tabId);
+      });
+      $("tab-desk").className = tabId === "sec-desk" ? "btn-primary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2" : "btn-secondary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2";
+      $("tab-questions").className = tabId === "sec-questions" ? "btn-primary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2" : "btn-secondary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2";
+      $("tab-scenarios").className = tabId === "sec-scenarios" ? "btn-primary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2" : "btn-secondary rounded-xl px-4 py-2 font-bold text-xs md:text-sm flex items-center gap-2";
+
+      if (tabId === "sec-questions") {
+        renderQuestionSection();
+      }
+    }
+
+    $("tab-desk").addEventListener("click", () => switchTab("sec-desk"));
+    $("tab-questions").addEventListener("click", () => switchTab("sec-questions"));
+    $("tab-scenarios").addEventListener("click", () => switchTab("sec-scenarios"));
+    $("go-to-questions-btn").addEventListener("click", () => switchTab("sec-questions"));
+    $("q-back-to-desk-btn").addEventListener("click", () => switchTab("sec-desk"));
+
+    // ================= DENEY MASASI LOGIC =================
+    function updateScoreUI() {
+      $("score-value").textContent = totalScore;
+      $("total-experiments-count").textContent = deskHistory.length;
+      $("q-total-trials-count").textContent = deskHistory.length;
+    }
+
+    function setDeskMode(mode) {
+      deskMode = mode;
+      playSound('click');
+      $("desk-mode-dice").className = mode === "dice" ? "btn-primary text-xs px-3 py-1.5 rounded-lg font-bold" : "btn-secondary text-xs px-3 py-1.5 rounded-lg font-bold";
+      $("desk-mode-coin").className = mode === "coin" ? "btn-primary text-xs px-3 py-1.5 rounded-lg font-bold" : "btn-secondary text-xs px-3 py-1.5 rounded-lg font-bold";
+      $("desk-status-badge").textContent = mode === "dice" ? "Sayı Küpü Deneyi" : "Yazı - Tura Deneyi";
+      $("desk-title").textContent = mode === "dice" ? "Zar Atarak Gözlem Verisi Toplama" : "Madeni Para Atarak Gözlem Verisi Toplama";
+      $("dice-visual-box").classList.toggle("hidden", mode !== "dice");
+      $("coin-visual-box").classList.toggle("hidden", mode !== "coin");
+      renderDeskUI();
+    }
+
+    $("desk-mode-dice").addEventListener("click", () => setDeskMode("dice"));
+    $("desk-mode-coin").addEventListener("click", () => setDeskMode("coin"));
+
+    function resetDeskData() {
+      playSound('click');
+      diceCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+      coinCounts = { "YAZI": 0, "TURA": 0 };
+      deskHistory = [];
+      $("die-face").textContent = "🎲";
+      $("coin-face").textContent = "YAZI";
+      renderDeskUI();
+      updateScoreUI();
+    }
+
+    $("reset-desk-btn").addEventListener("click", resetDeskData);
+
+    function rollExperiment(times) {
+      playSound('roll');
+      const total = deskHistory.length + times;
+
+      if (deskMode === "dice") {
+        $("die-face").classList.add("dice-spin");
+        setTimeout(() => $("die-face").classList.remove("dice-spin"), 600);
+
+        for (let i = 0; i < times; i++) {
+          const res = Math.floor(randomUnit() * 6) + 1;
+          diceCounts[res]++;
+          deskHistory.push(res);
+          $("die-face").textContent = diceFaces[res - 1];
+        }
+      } else {
+        $("coin-face").classList.add("coin-flip");
+        setTimeout(() => $("coin-face").classList.remove("coin-flip"), 650);
+
+        for (let i = 0; i < times; i++) {
+          const isHeads = randomUnit() < 0.5;
+          const resStr = isHeads ? "YAZI" : "TURA";
+          coinCounts[resStr]++;
+          deskHistory.push(resStr);
+          $("coin-face").textContent = resStr;
+        }
+      }
+
+      renderDeskUI();
+      updateScoreUI();
+    }
+
+    $("roll-1-btn").addEventListener("click", () => rollExperiment(1));
+    $("roll-5-btn").addEventListener("click", () => rollExperiment(5));
+    $("roll-10-btn").addEventListener("click", () => rollExperiment(10));
+    $("roll-100-btn").addEventListener("click", () => rollExperiment(100));
+
+    function renderDeskUI() {
+      const total = deskHistory.length;
+      $("roll-counter-text").textContent = `Toplam Atış: ${total}`;
+
+      // History Tokens Render
+      const historyBox = $("desk-history");
+      historyBox.replaceChildren();
+
+      if (total === 0) {
+        historyBox.innerHTML = `<span class="text-xs text-gray-400 font-medium my-auto mx-auto">Henüz gözlem yapılmadı.</span>`;
+      } else {
+        deskHistory.slice(-20).forEach(item => {
+          const token = document.createElement("span");
+          token.className = "result-token" + (item === 6 || item === "YAZI" ? "" : " no");
+          token.textContent = String(item);
+          historyBox.append(token);
+        });
+      }
+
+      // Frequency Table Render
+      const tbody = $("desk-freq-tbody");
+      tbody.replaceChildren();
+
+      const barsContainer = $("desk-bars-container");
+      barsContainer.replaceChildren();
+
+      if (deskMode === "dice") {
+        for (let i = 1; i <= 6; i++) {
+          const count = diceCounts[i];
+          const rawProbStr = total === 0 ? "0" : `${count} / ${total}`;
+          const simplifiedStr = total === 0 ? "0" : simplifyFraction(count, total);
+          const percentStr = total === 0 ? "%0" : rateText(count / total);
+
+          // Table row
+          const tr = document.createElement("tr");
+          tr.className = "border-b border-gray-200 hover:bg-amber-50/50";
+          tr.innerHTML = `
+            <td class="p-2 font-bold text-[#183348]">${diceFaces[i - 1]} (${i})</td>
+            <td class="p-2 font-semibold text-[#183348]">${count} kez</td>
+            <td class="p-2 font-extrabold text-[#087f78]">${simplifiedStr} <span class="text-[10px] text-gray-500 font-normal">(${rawProbStr})</span></td>
+            <td class="p-2 font-bold text-[#183348]">${percentStr}</td>
+          `;
+          tbody.append(tr);
+
+          // Distribution bar
+          const barPct = total === 0 ? 0 : Math.round((count / total) * 100);
+          const barDiv = document.createElement("div");
+          barDiv.className = "text-xs font-semibold";
+          barDiv.innerHTML = `
+            <div class="flex justify-between text-[11px] mb-0.5">
+              <span>Zar ${i} (${diceFaces[i-1]})</span>
+              <span class="font-bold text-[#087f78]">${count} (${percentStr})</span>
+            </div>
+            <div class="h-3.5 w-full bg-gray-200 rounded-full overflow-hidden border border-[#183348]">
+              <div class="h-full bg-[#087f78] progress-bar-fill" style="width: ${barPct}%"></div>
+            </div>
+          `;
+          barsContainer.append(barDiv);
+        }
+      } else {
+        // Coin mode table & bars
+        ["YAZI", "TURA"].forEach(face => {
+          const count = coinCounts[face];
+          const rawProbStr = total === 0 ? "0" : `${count} / ${total}`;
+          const simplifiedStr = total === 0 ? "0" : simplifyFraction(count, total);
+          const percentStr = total === 0 ? "%0" : rateText(count / total);
+
+          const tr = document.createElement("tr");
+          tr.className = "border-b border-gray-200 hover:bg-amber-50/50";
+          tr.innerHTML = `
+            <td class="p-2 font-bold text-[#183348]">${face === "YAZI" ? "🪙 YAZI" : "🪙 TURA"}</td>
+            <td class="p-2 font-semibold text-[#183348]">${count} kez</td>
+            <td class="p-2 font-extrabold text-[#087f78]">${simplifiedStr} <span class="text-[10px] text-gray-500 font-normal">(${rawProbStr})</span></td>
+            <td class="p-2 font-bold text-[#183348]">${percentStr}</td>
+          `;
+          tbody.append(tr);
+
+          const barPct = total === 0 ? 0 : Math.round((count / total) * 100);
+          const barDiv = document.createElement("div");
+          barDiv.className = "text-xs font-semibold";
+          barDiv.innerHTML = `
+            <div class="flex justify-between text-[11px] mb-0.5">
+              <span>${face}</span>
+              <span class="font-bold text-[#087f78]">${count} (${percentStr})</span>
+            </div>
+            <div class="h-3.5 w-full bg-gray-200 rounded-full overflow-hidden border border-[#183348]">
+              <div class="h-full ${face === 'YAZI' ? 'bg-[#087f78]' : 'bg-[#ef7457]'} progress-bar-fill" style="width: ${barPct}%"></div>
+            </div>
+          `;
+          barsContainer.append(barDiv);
+        });
+      }
+    }
+
+    // ================= TAB 2: DYNAMIC QUIZ GENERATOR =================
+    function renderQuestionSection() {
+      const total = deskHistory.length;
+      if (total < 5) {
+        $("q-not-enough").classList.remove("hidden");
+        $("q-active-box").classList.add("hidden");
+      } else {
+        $("q-not-enough").classList.add("hidden");
+        $("q-active-box").classList.remove("hidden");
+        if (!activeQuestion) {
+          generateDynamicQuestion();
+        }
+      }
+    }
+
+    $("generate-new-q-btn").addEventListener("click", () => {
+      playSound('click');
+      generateDynamicQuestion();
+    });
+
+    function generateDynamicQuestion() {
+      const total = deskHistory.length;
+      if (total < 5) return;
+
+      $("q-feedback").classList.add("hidden");
+
+      let qText = "";
+      let correctNum = 0;
+      let targetDesc = "";
+
+      if (deskMode === "dice") {
+        const qTypes = ['single', 'even', 'greaterThan3', 'prime'];
+        const selectedType = qTypes[Math.floor(randomUnit() * qTypes.length)];
+
+        if (selectedType === 'single') {
+          const target = Math.floor(randomUnit() * 6) + 1;
+          qText = `Deney Masasında yapılan <strong>${total}</strong> atış sonucunda, zarın üst yüzüne <strong>"${target}" (${diceFaces[target-1]})</strong> gelme olayının <u>deneysel olasılığı</u> kaçtır?`;
+          correctNum = diceCounts[target];
+          targetDesc = `Zarın üst yüzüne ${target} gelme sayısı: ${correctNum}`;
+        } else if (selectedType === 'even') {
+          qText = `Deney Masasında yapılan <strong>${total}</strong> atış sonucunda, zarın üst yüzüne <strong>ÇİFT SAYI (2, 4, 6)</strong> gelme olayının <u>deneysel olasılığı</u> kaçtır?`;
+          correctNum = diceCounts[2] + diceCounts[4] + diceCounts[6];
+          targetDesc = `Çift sayı gelme toplam sayısı: ${correctNum} (2: ${diceCounts[2]}, 4: ${diceCounts[4]}, 6: ${diceCounts[6]})`;
+        } else if (selectedType === 'greaterThan3') {
+          qText = `Deney Masasında yapılan <strong>${total}</strong> atış sonucunda, zarın üst yüzüne <strong>3'ten büyük bir sayı (4, 5, 6)</strong> gelme olayının <u>deneysel olasılığı</u> kaçtır?`;
+          correctNum = diceCounts[4] + diceCounts[5] + diceCounts[6];
+          targetDesc = `3'ten büyük sayı gelme toplam sayısı: ${correctNum}`;
+        } else {
+          qText = `Deney Masasında yapılan <strong>${total}</strong> atış sonucunda, zarın üst yüzüne <strong>ASAL SAYI (2, 3, 5)</strong> gelme olayının <u>deneysel olasılığı</u> kaçtır?`;
+          correctNum = diceCounts[2] + diceCounts[3] + diceCounts[5];
+          targetDesc = `Asal sayı gelme toplam sayısı: ${correctNum}`;
+        }
+      } else {
+        // Coin Mode
+        const isHeadsTarget = randomUnit() < 0.5;
+        const targetName = isHeadsTarget ? "YAZI" : "TURA";
+        qText = `Deney Masasında yapılan <strong>${total}</strong> atış sonucunda, paranın üst yüzüne <strong>"${targetName}"</strong> gelme olayının <u>deneysel olasılığı</u> kaçtır?`;
+        correctNum = coinCounts[targetName];
+        targetDesc = `Üst yüze ${targetName} gelme sayısı: ${correctNum}`;
+      }
+
+      const correctAnsStr = simplifyFraction(correctNum, total);
+
+      // Generate Option Distractors
+      const optionsSet = new Set();
+      optionsSet.add(correctAnsStr);
+
+      // Add common misconception distractors
+      if (correctNum > 0 && correctNum < total) {
+        optionsSet.add(simplifyFraction(total - correctNum, total)); // Inverse probability error
+      }
+      optionsSet.add(simplifyFraction(1, deskMode === "dice" ? 6 : 2)); // Theoretical probability instead of experimental
+
+      while (optionsSet.size < 4) {
+        const fakeNum = Math.floor(randomUnit() * (total + 1));
+        optionsSet.add(simplifyFraction(fakeNum, total));
+      }
+
+      const optionsArray = Array.from(optionsSet).sort(() => randomUnit() - 0.5);
+
+      activeQuestion = {
+        text: qText,
+        correctAnswer: correctAnsStr,
+        correctNum: correctNum,
+        total: total,
+        targetDesc: targetDesc
+      };
+
+      $("q-text").innerHTML = qText;
+
+      const optionsBox = $("q-options");
+      optionsBox.replaceChildren();
+
+      optionsArray.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn-secondary text-sm md:text-base font-bold py-3 px-4 rounded-xl text-center hover:bg-amber-100 transition-colors border-2 border-[#183348]";
+        btn.textContent = opt;
+        btn.onclick = () => checkDynamicAnswer(opt, btn);
+        optionsBox.append(btn);
+      });
+    }
+
+    function checkDynamicAnswer(selectedOpt, btnElement) {
+      if (!activeQuestion) return;
+
+      const feedbackBox = $("q-feedback");
+      feedbackBox.classList.remove("hidden");
+
+      if (selectedOpt === activeQuestion.correctAnswer) {
+        playSound('score');
+        totalScore += 20;
+        updateScoreUI();
+
+        feedbackBox.className = "mt-4 p-4 rounded-xl border-2 border-[#183348] bg-teal-100 text-[#055954] font-bold text-xs md:text-sm";
+        feedbackBox.innerHTML = `
+          👏 Tebrikler! Doğru Cevap: <strong>${activeQuestion.correctAnswer}</strong><br>
+          <span class="font-normal text-xs block mt-1">
+            ${activeQuestion.targetDesc}. Deneysel Olasılık = $\\frac{\\text{Gerçekleşen Sayısı}}{\\text{Toplam Atış}} = \\frac{${activeQuestion.correctNum}}{${activeQuestion.total}} = ${activeQuestion.correctAnswer}$ (+20 Puan)
+          </span>
+        `;
+      } else {
+        playSound('wrong');
+        feedbackBox.className = "mt-4 p-4 rounded-xl border-2 border-[#183348] bg-rose-100 text-[#953d27] font-bold text-xs md:text-sm";
+        feedbackBox.innerHTML = `
+          ❌ Yanlış Cevap. Doğru Yanıt: <strong>${activeQuestion.correctAnswer}</strong><br>
+          <span class="font-normal text-xs block mt-1">
+            ${activeQuestion.targetDesc}. Formül: $\\frac{${activeQuestion.correctNum}}{${activeQuestion.total}}$ sadeleşince <strong>${activeQuestion.correctAnswer}</strong> bulunur.
+          </span>
+        `;
+      }
+
+      // Disable options after answer
+      document.querySelectorAll("#q-options button").forEach(b => b.disabled = true);
+    }
+
+    // ================= TAB 3: DAILY SCENARIOS =================
+    function renderScenarioUI() {
+      const sc = scenarios[scIndex];
+      $("sc-heading").textContent = sc.title;
+      $("sc-subheading").textContent = sc.sub;
+      $("sc-icon").textContent = sc.icon;
+      $("sc-badge").textContent = `Senaryo #${scIndex + 1}`;
+
+      const historyBox = $("sc-history-tokens");
+      historyBox.replaceChildren();
+
+      const successCount = scHistory.filter(x => x).length;
+      const totalCount = scHistory.length;
+
+      scHistory.forEach(item => {
+        const token = document.createElement("span");
+        token.className = "result-token" + (item ? "" : " no");
+        token.textContent = item ? "✓" : "×";
+        historyBox.append(token);
+      });
+
+      $("sc-observed-rate").textContent = `${rateText(successCount / totalCount)} (${successCount}/${totalCount})`;
+      $("sc-theoretical-rate").textContent = `${sc.theoretical} (Model)`;
+    }
+
+    $("sc-guess-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const val = parseProbabilityInput($("sc-guess-input").value);
+
+      if (val === null) {
+        $("sc-validation").textContent = "⚠️ Geçerli bir oran yazın (örn: %65, 0,65 veya 13/20).";
+        return;
+      }
+
+      $("sc-validation").textContent = "";
+      const currentObserved = scHistory.filter(x => x).length / scHistory.length;
+      const diff = Math.abs(val - currentObserved);
+      const earned = Math.max(10, Math.round(100 * (1 - diff)));
+
+      // Simulate next trial outcome based on scenario chance
+      const outcome = randomUnit() < scenarios[scIndex].chance;
+      scHistory.push(outcome);
+
+      totalScore += earned;
+      updateScoreUI();
+      playSound('score');
+
+      const feedbackBox = $("sc-feedback-box");
+      feedbackBox.classList.remove("hidden");
+      $("sc-feedback-text").innerHTML = `
+        Gözlem Sonucu: <strong>${outcome ? "Olay Başarıyla Gerçekleşti (✓)" : "Olay Gerçekleşmedi (×)"}</strong>.<br>
+        Tahmininiz: <strong>${rateText(val)}</strong> | Önceki Gözlem: <strong>${rateText(currentObserved)}</strong><br>
+        <span class="text-[#087f78] font-extrabold block mt-1">+${earned} Puan Kazandınız! 🎉</span>
+      `;
+
+      $("sc-guess-input").value = "";
+      renderScenarioUI();
+    });
+
+    // Initialize Page
+    renderDeskUI();
+    renderScenarioUI();
+    updateScoreUI();
+  </script>
+</body>
+</html>
